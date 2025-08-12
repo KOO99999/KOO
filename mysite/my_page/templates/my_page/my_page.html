@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>마이페이지</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      height: 100vh;
+      background: #f9f9f9;
+    }
+    #sidebar {
+      width: 220px;
+      background: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      padding-top: 20px;
+    }
+    #sidebar a {
+      color: white;
+      padding: 15px 25px;
+      text-decoration: none;
+      display: block;
+      border-left: 4px solid transparent;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    #sidebar a.active, #sidebar a:hover {
+      background: #34495e;
+      border-left-color: #1abc9c;
+    }
+    #content {
+      flex-grow: 1;
+      background: white;
+      padding: 30px;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div id="sidebar">
+    <a href="{% url 'my_profile' %}" class="{% if request.path == '/my_profile/' %}active{% endif %}">내 정보</a>
+    <a href="{% url 'my_groups' %}" class="{% if request.path == '/my_groups/' %}active{% endif %}">내 모임</a>
+    <a href="{% url 'my_activities' %}" class="{% if request.path == '/my_activities/' %}active{% endif %}">내 활동</a>
+    <a href="{% url 'logout' %}">로그아웃</a>
+  </div>
+
+  <div id="content">
+    {% block content %}
+    <!-- 각 페이지 내용이 여기에 들어갑니다 -->
+    {% endblock %}
+  </div>
+</body>
+</html>

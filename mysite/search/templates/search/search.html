@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>검색창 + 추천어</title>
+  <style>
+    #search-box {
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      width: 300px;
+      font-size: 1rem;
+    }
+    #submit-btn {
+      margin-left: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      background-color: #0084ff;
+      color: white;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    #submit-btn:hover {
+      background-color: #005bb5;
+    }
+    #suggestions {
+      margin-top: 0.3rem;
+      width: 300px;
+      border: 1px solid #ccc;
+      background: #fff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    #suggestions h4 {
+      margin: 0.5rem 0 0.3rem 0;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #555;
+    }
+    #suggestions ul {
+      margin: 0 0 0.5rem 1rem;
+      padding: 0;
+      list-style-type: disc;
+    }
+    #suggestions li {
+      cursor: pointer;
+      padding: 0.2rem 0;
+    }
+    #suggestions li:hover {
+      background-color: #f0f0f0;
+    }
+    #no-results {
+      display: none;
+      margin-left: 1rem;
+      color: #999;
+      font-style: italic;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+  <input type="text" id="search-box" placeholder="검색어를 입력하세요" autocomplete="off" />
+  <button id="submit-btn">검색 실행</button>
+
+  <div id="suggestions">
+    <h4>추천 검색어</h4>
+    <ul id="recommended-list">
+      <li>파이썬 강좌</li>
+      <li>장고 튜토리얼</li>
+      <li>인공지능 기초</li>
+    </ul>
+
+    <h4>최근 검색어</h4>
+    <ul id="recent-list">
+      <li>웹개발</li>
+      <li>머신러닝</li>
+    </ul>
+
+    <h4>인기 검색어</h4>
+    <ul id="popular-list">
+      <li>챗봇 만들기</li>
+      <li>데이터 분석</li>
+      <li>파이참 사용법</li>
+    </ul>
+
+    <div id="no-results">검색 결과가 없습니다.</div>
+  </div>
+
+  <script>
+    const searchBox = document.getElementById('search-box');
+    const submitBtn = document.getElementById('submit-btn');
+    const suggestionLists = document.querySelectorAll('#suggestions ul');
+    const noResultsDiv = document.getElementById('no-results');
+
+    // 추천어, 최근어, 인기어 클릭 시 검색창에 입력
+    document.querySelectorAll('#suggestions li').forEach(item => {
+      item.addEventListener('click', () => {
+        searchBox.value = item.textContent;
+        searchBox.focus();
+      });
+    });
+
+    // 검색 실행 함수
+    function doSearch() {
+      const term = searchBox.value.trim();
+      if(term){
+        window.location.href = '/search/?q=' + encodeURIComponent(term);
+      }
+    }
+
+    // 검색 실행 버튼 클릭 시
+    submitBtn.addEventListener('click', doSearch);
+
+    // 검색창에서 Enter 키 누르면 검색 실행
+    searchBox.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        doSearch();
+      }
+    });
+
+    // 입력 시 추천어 필터링 함수 + 검색결과 없음 표시
+    searchBox.addEventListener('input', () => {
+      const filter = searchBox.value.trim().toLowerCase();
+      let totalVisibleItems = 0;
+
+      suggestionLists.forEach(ul => {
+        let visibleCount = 0;
+        ul.querySelectorAll('li').forEach(li => {
+          if(!filter || li.textContent.toLowerCase().includes(filter)) {
+            li.style.display = '';
+            visibleCount++;
+          } else {
+            li.style.display = 'none';
+          }
+        });
+        ul.style.display = visibleCount > 0 ? '' : 'none';
+        totalVisibleItems += visibleCount;
+      });
+
+      noResultsDiv.style.display = totalVisibleItems === 0 ? 'block' : 'none';
+    });
+  </script>
+</body>
+</html>

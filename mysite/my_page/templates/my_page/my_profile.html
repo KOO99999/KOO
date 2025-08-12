@@ -1,0 +1,170 @@
+{% extends "my_page/my_page.html" %}
+
+{% block content %}
+  <style>
+    /* 필요하면 여기만 스타일 추가 가능 */
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h2 {
+      border-bottom: 2px solid #4a90e2;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    form {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+    }
+    input[type="file"] {
+      padding: 0.3rem 0;
+    }
+    .profile-pic {
+      display: block;
+      margin-bottom: 0.5rem;
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #4a90e2;
+    }
+    .button-group {
+      margin-top: 1.5rem;
+      text-align: right;
+    }
+    button {
+      background-color: #4a90e2;
+      border: none;
+      color: white;
+      padding: 0.5rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      transition: background-color 0.3s ease;
+    }
+    button.cancel {
+      background-color: #ccc;
+      color: #555;
+    }
+    button:hover {
+      background-color: #357ABD;
+    }
+    button.cancel:hover {
+      background-color: #999;
+    }
+  </style>
+
+  <h2>내 정보</h2>
+  <form>
+    <div class="form-group">
+      <label for="profile-pic-upload">사진 첨부</label>
+      <img src="https://via.placeholder.com/120" alt="프로필 사진" class="profile-pic" id="profilePicPreview" />
+      <input type="file" id="profile-pic-upload" accept="image/*" />
+    </div>
+    <div class="form-group">
+      <label for="nickname">닉네임</label>
+      <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input type="text" id="name" name="name" placeholder="이름을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label for="userid">ID</label>
+      <input type="text" id="userid" name="userid" placeholder="ID" readonly />
+    </div>
+    <div class="form-group">
+      <label for="password">PW</label>
+      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label for="email">이메일</label>
+      <input type="email" id="email" name="email" placeholder="example@example.com" />
+    </div>
+    <div class="form-group">
+      <label for="fullname">성명</label>
+      <input type="text" id="fullname" name="fullname" placeholder="성명을 입력하세요" />
+    </div>
+    <div class="form-group">
+      <label for="birthdate">생년월일</label>
+      <input type="date" id="birthdate" name="birthdate" />
+    </div>
+    <div class="form-group">
+      <label for="address">주소</label>
+      <textarea id="address" name="address" rows="2" placeholder="주소를 입력하세요"></textarea>
+    </div>
+    <div class="form-group">
+      <label for="mbti">MBTI</label>
+      <select id="mbti" name="mbti">
+        <option value="">선택하세요</option>
+        <option value="INTJ">INTJ</option>
+        <option value="INTP">INTP</option>
+        <option value="ENTJ">ENTJ</option>
+        <option value="ENTP">ENTP</option>
+        <option value="INFJ">INFJ</option>
+        <option value="INFP">INFP</option>
+        <option value="ENFJ">ENFJ</option>
+        <option value="ENFP">ENFP</option>
+        <option value="ISTJ">ISTJ</option>
+        <option value="ISFJ">ISFJ</option>
+        <option value="ESTJ">ESTJ</option>
+        <option value="ESFJ">ESFJ</option>
+        <option value="ISTP">ISTP</option>
+        <option value="ISFP">ISFP</option>
+        <option value="ESTP">ESTP</option>
+        <option value="ESFP">ESFP</option>
+      </select>
+    </div>
+    <div class="button-group">
+      <button type="button" class="cancel">취소</button>
+      <button type="submit">수정 확인</button>
+    </div>
+  </form>
+
+  <script>
+    const fileInput = document.getElementById('profile-pic-upload');
+    const previewImg = document.getElementById('profilePicPreview');
+
+    fileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          previewImg.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    document.querySelector('.cancel').addEventListener('click', () => {
+      location.reload();
+    });
+  </script>
+{% endblock %}

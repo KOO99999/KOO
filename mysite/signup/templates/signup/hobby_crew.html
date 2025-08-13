@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  {% load static %}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>크루 상세</title>
+  <link rel="stylesheet" href="{% static 'signup/hobby_crew.css' %}" />
+  <script defer src="./crew.js"></script>
+</head>
+<body>
+  <header class="bar">
+    <a class="back" href="../main.html">← 메인</a>
+    <h1>크루 상세</h1>
+    <div></div>
+  </header>
+
+  <main class="wrap">
+    <section class="detail">
+      <div class="photo">
+        <img id="crewImg" alt="crew"/>
+      </div>
+
+      <div class="info">
+        <div class="row"><span class="label">크루명</span><span id="crewName">-</span></div>
+        <div class="row"><span class="label">선택 취미</span><span id="crewHobby">-</span></div>
+        <div class="row"><span class="label">모임</span><span id="crewTime">-</span></div>
+        <div class="row"><span class="label">장소</span><span id="crewLoc">-</span></div>
+        <div class="row"><span class="label">인원</span><span id="crewMembers">-</span></div>
+
+        <div class="desc">
+          <div class="label">크루 소개</div>
+          <p id="crewDesc">즐겁게 함께하는 소모임입니다.</p>
+        </div>
+
+        <!-- 기존 버튼 유지 -->
+        <button id="applyBtn" class="primary">참가 신청</button>
+      </div>
+    </section>
+
+    <!-- 기존 가입 정보 카드 유지 -->
+    <section class="join-card">
+      <h2>크루 가입 정보</h2>
+      <div class="form">
+        <label>제목 <input id="joinTitle" placeholder="예: 첫 참여비/회비 입금" /></label>
+        <label>계좌 <input id="joinBank" placeholder="예: 카뱅 3333-..." /></label>
+        <button id="joinSubmit" class="secondary">가입 신청</button>
+      </div>
+      <div class="gallery">
+        <div class="title">기록</div>
+        <div class="grid">
+          <div class="item">img</div><div class="item">img</div>
+          <div class="item">img</div><div class="item">img</div>
+          <div class="item">img</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ✅ 신청 관리(크루장 전용) — 추가 -->
+    <section id="manageSection" class="join-card" hidden>
+      <h2>신청 관리 (크루장)</h2>
+      <div class="table-wrap">
+        <table class="table" id="manageTable">
+          <thead>
+            <tr><th>신청자</th><th>제목</th><th>사유</th><th>상태</th><th>액션</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- 하단 나가기 (기존 유지) -->
+  <div class="exit-bar">
+    <button id="leaveBtn" class="ghost">나가기</button>
+  </div>
+
+  <!-- (기존) 확인/완료 모달 유지 -->
+  <div class="modal" id="confirmModal" hidden>
+    <div class="dialog">
+      <p>참여하시겠습니까?</p>
+      <div class="actions">
+        <button id="confirmOk" class="primary">확인</button>
+        <button id="confirmCancel">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="doneModal" hidden>
+    <div class="dialog">
+      <p>참여신청이 완료되었습니다.</p>
+      <div class="actions">
+        <button id="doneOk" class="primary">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ (추가) 신청 폼 모달 -->
+  <div class="modal" id="applicationModal" hidden>
+    <div class="dialog">
+      <h3 style="margin:0 0 10px">참가/가입 신청</h3>
+      <div class="form" style="flex-direction:column;align-items:stretch">
+        <input id="applyTitle"  placeholder="신청 제목 (예: 첫 참여 인사)" />
+        <input id="applyBank"   placeholder="개인/연락처 (선택)" />
+        <textarea id="applyReason" rows="6" placeholder="가입 사유·자기소개를 적어주세요"></textarea>
+      </div>
+      <div class="actions">
+        <button id="applicationSubmit" class="primary">신청 보내기</button>
+        <button id="applicationCancel" class="ghost">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ (추가) 신청 접수 안내 모달 -->
+  <div class="modal" id="doneReceiveModal" hidden>
+    <div class="dialog">
+      <p>신청이 접수되었습니다. 크루장의 승인 후 참여가 확정됩니다.</p>
+      <div class="actions">
+        <button id="doneReceiveOk" class="primary">확인</button>
+      </div>
+    </div>
+  </div>
+  <script  src="{% static 'signup/hobby_crew.js' %}"></script>
+</body>
+</html>

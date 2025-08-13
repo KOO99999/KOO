@@ -24,4 +24,7 @@ urlpatterns = [
     path('chatbot/', include('chatbot.urls')),
     path('search/', include('search.urls')),
     path('my_page/', include('my_page.urls')),   # my_page 앱 urls.py 포함
+    path('crew/', include('crew.urls')),
+    path('community/', include('community.urls')),
+    path('signup/', include('signup.urls')),
 ]

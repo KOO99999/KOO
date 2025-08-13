@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     'home',         # 홈 앱 추가
     'chatbot',      # 챗봇 앱 추가
     'search',       # 검색 앱 추가
-    'my_page'       # 마이 페이지 앱 추가
+    'my_page',      # 마이 페이지 앱 추가
+    'crew' ,        # 크루 앱 추가
+    'community',    # 커뮤니티 앱 추가
+    'signup',       # 회원가입 앱 추가
 ]
 
 MIDDLEWARE = [
@@ -119,7 +122,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

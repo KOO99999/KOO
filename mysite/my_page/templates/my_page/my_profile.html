@@ -1,9 +1,79 @@
 {% extends "my_page/my_page.html" %}
 
+{% block title %}내 정보{% endblock %}
+
 {% block content %}
+  <div class="form-wrapper">
+    <h2>내 정보</h2>
+    <form>
+      <div class="form-group">
+        <label for="profile-pic-upload">사진 첨부</label>
+        <img src="https://via.placeholder.com/120" alt="프로필 사진" class="profile-pic" id="profilePicPreview" />
+        <input type="file" id="profile-pic-upload" accept="image/*" />
+      </div>
+      <div class="form-group">
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" />
+      </div>
+      <div class="form-group">
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력하세요" />
+      </div>
+      <div class="form-group">
+        <label for="userid">ID</label>
+        <input type="text" id="userid" name="userid" placeholder="ID" readonly />
+      </div>
+      <div class="form-group">
+        <label for="password">PW</label>
+        <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" />
+      </div>
+      <div class="form-group">
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="example@example.com" />
+      </div>
+      <div class="form-group">
+        <label for="fullname">성명</label>
+        <input type="text" id="fullname" name="fullname" placeholder="성명을 입력하세요" />
+      </div>
+      <div class="form-group">
+        <label for="birthdate">생년월일</label>
+        <input type="date" id="birthdate" name="birthdate" />
+      </div>
+      <div class="form-group">
+        <label for="address">주소</label>
+        <textarea id="address" name="address" rows="2" placeholder="주소를 입력하세요"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="mbti">MBTI</label>
+        <select id="mbti" name="mbti">
+          <option value="">선택하세요</option>
+          <option value="INTJ">INTJ</option>
+          <option value="INTP">INTP</option>
+          <option value="ENTJ">ENTJ</option>
+          <option value="ENTP">ENTP</option>
+          <option value="INFJ">INFJ</option>
+          <option value="INFP">INFP</option>
+          <option value="ENFJ">ENFJ</option>
+          <option value="ENFP">ENFP</option>
+          <option value="ISTJ">ISTJ</option>
+          <option value="ISFJ">ISFJ</option>
+          <option value="ESTJ">ESTJ</option>
+          <option value="ESFJ">ESFJ</option>
+          <option value="ISTP">ISTP</option>
+          <option value="ISFP">ISFP</option>
+          <option value="ESTP">ESTP</option>
+          <option value="ESFP">ESFP</option>
+        </select>
+      </div>
+      <div class="button-group">
+        <button type="button" class="cancel">취소</button>
+        <button type="submit">수정 확인</button>
+      </div>
+    </form>
+  </div>
+
   <style>
-    /* 필요하면 여기만 스타일 추가 가능 */
-    body {
+    .form-wrapper {
       font-family: 'Noto Sans KR', sans-serif;
       max-width: 600px;
       margin: 2rem auto;
@@ -80,73 +150,6 @@
       background-color: #999;
     }
   </style>
-
-  <h2>내 정보</h2>
-  <form>
-    <div class="form-group">
-      <label for="profile-pic-upload">사진 첨부</label>
-      <img src="https://via.placeholder.com/120" alt="프로필 사진" class="profile-pic" id="profilePicPreview" />
-      <input type="file" id="profile-pic-upload" accept="image/*" />
-    </div>
-    <div class="form-group">
-      <label for="nickname">닉네임</label>
-      <input type="text" id="nickname" name="nickname" placeholder="닉네임을 입력하세요" />
-    </div>
-    <div class="form-group">
-      <label for="name">이름</label>
-      <input type="text" id="name" name="name" placeholder="이름을 입력하세요" />
-    </div>
-    <div class="form-group">
-      <label for="userid">ID</label>
-      <input type="text" id="userid" name="userid" placeholder="ID" readonly />
-    </div>
-    <div class="form-group">
-      <label for="password">PW</label>
-      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" />
-    </div>
-    <div class="form-group">
-      <label for="email">이메일</label>
-      <input type="email" id="email" name="email" placeholder="example@example.com" />
-    </div>
-    <div class="form-group">
-      <label for="fullname">성명</label>
-      <input type="text" id="fullname" name="fullname" placeholder="성명을 입력하세요" />
-    </div>
-    <div class="form-group">
-      <label for="birthdate">생년월일</label>
-      <input type="date" id="birthdate" name="birthdate" />
-    </div>
-    <div class="form-group">
-      <label for="address">주소</label>
-      <textarea id="address" name="address" rows="2" placeholder="주소를 입력하세요"></textarea>
-    </div>
-    <div class="form-group">
-      <label for="mbti">MBTI</label>
-      <select id="mbti" name="mbti">
-        <option value="">선택하세요</option>
-        <option value="INTJ">INTJ</option>
-        <option value="INTP">INTP</option>
-        <option value="ENTJ">ENTJ</option>
-        <option value="ENTP">ENTP</option>
-        <option value="INFJ">INFJ</option>
-        <option value="INFP">INFP</option>
-        <option value="ENFJ">ENFJ</option>
-        <option value="ENFP">ENFP</option>
-        <option value="ISTJ">ISTJ</option>
-        <option value="ISFJ">ISFJ</option>
-        <option value="ESTJ">ESTJ</option>
-        <option value="ESFJ">ESFJ</option>
-        <option value="ISTP">ISTP</option>
-        <option value="ISFP">ISFP</option>
-        <option value="ESTP">ESTP</option>
-        <option value="ESFP">ESFP</option>
-      </select>
-    </div>
-    <div class="button-group">
-      <button type="button" class="cancel">취소</button>
-      <button type="submit">수정 확인</button>
-    </div>
-  </form>
 
   <script>
     const fileInput = document.getElementById('profile-pic-upload');

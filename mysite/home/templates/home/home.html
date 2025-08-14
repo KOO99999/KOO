@@ -5,38 +5,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>취미 프로젝트</title>
-  <link rel="stylesheet" href="{% static 'home/home.css' %}" />
+
+  <!-- 홈 전용 -->
+  <link rel="stylesheet" href="{% static 'home/home.css' %}">
   <script defer src="{% static 'home/home.js' %}"></script>
+  <script src="{% static 'home/chatbot-overlay.js' %}"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- 챗봇 전용 스타일(오버레이/버블 등) : home.css 아래에서 로드! -->
+  <link rel="stylesheet" href="{% static 'chatbot/chatbot.css' %}?v={% now 'U' %}">
+
+  <!-- 홈의 FAB (홈 스타일 유지) -->
+  <style>
+    .fab-to-chatbot{
+      position:fixed; right:16px; bottom:16px; z-index:1050;
+      width:56px; height:56px; border-radius:50%; border:none;
+      background:#fff4b8; color:#333; box-shadow:0 6px 16px rgba(0,0,0,.15);
+      display:flex; align-items:center; justify-content:center;
+      text-decoration:none; font-size:22px; cursor:pointer;
+    }
+    .fab-to-chatbot:hover{ background:#ffe082; }
+  </style>
 </head>
 <body>
   <header class="topbar">
     <h1>취미 프로젝트</h1>
-
     <nav>
       <button id="backToMainBtn" class="ghost">메인</button>
-<!--      <button id="toSignupBtn" class="ghost">회원가입</button>-->
       <button id="toSignupBtn" class="ghost" onclick="location.href='{% url 'signup' %}'">회원가입</button>
       <button id="toLoginBtn" class="ghost">로그인</button>
-
-      <!-- ✅ 추가: 로그인 상태에서만 보임 -->
       <button id="deleteAccountBtn" class="danger hidden">계정 삭제</button>
-
-      <!-- ✅ 추가: 전체 데이터 초기화(항상 노출) -->
       <button id="resetBtn" class="danger">데이터 초기화</button>
-
       <button id="logoutBtn" class="danger hidden">로그아웃</button>
     </nav>
   </header>
 
   <!-- 메인 -->
   <section id="mainPage" class="page">
-    <!-- 헤더 블럭(목업 스타일) -->
     <div class="hero">
       <div class="brand">타이틀</div>
-
       <div class="hero-right">
-        <!-- 검색바 -->
         <div class="searchbar">
           <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M21 21l-4.3-4.3m1.3-5.7a7 7 0 11-14 0 7 7 0 0114 0z" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -44,20 +52,15 @@
           <input type="text" placeholder="Search" />
           <button class="mic" type="button" aria-label="음성 검색">🎤</button>
         </div>
-
-        <!-- 아이콘/버튼 -->
         <div class="quick-icons">
-          <!-- ⬇️ 변경: id 부여 -->
           <button id="openCrewListBtn" class="circle" title="크루">👤</button>
           <button class="circle" title="메세지">✉️</button>
           <button id="openFavBtn" class="circle" title="관심(찜)">♡</button>
-          <!-- <button id="goLogin" class="ghost small">로그인</button> -->
           <button id="goMy" class="ghost small">마이페이지</button>
         </div>
       </div>
     </div>
 
-    <!-- BEST 크루 -->
     <section class="best-wrap">
       <h2>BEST 크루</h2>
       <div class="best-grid">
@@ -73,7 +76,6 @@
       </div>
     </section>
 
-    <!-- 커뮤니티 -->
     <section class="community">
       <h2><a class="link-heading" href="{% url 'community' %}">커뮤니티</a></h2>
       <div class="comm-grid">
@@ -83,7 +85,6 @@
       </div>
     </section>
 
-        <!-- 푸터 -->
     <footer class="footer">
       <div>
         <div class="ft-title">help</div>
@@ -96,51 +97,15 @@
         <a href="#">Update</a>
       </div>
       <div>
-        <div class="ft-title">
-          <i class="fab fa-instagram"></i> instagram
-        </div>
+        <div class="ft-title"><i class="fab fa-instagram"></i> instagram</div>
         <a href="https://instagram.com/yourbrand" target="_blank">@yourbrand</a>
       </div>
     </footer>
-
   </section>
 
-  <!-- 인증 영역 -->
-<!--  <section id="authPage" class="page hidden">-->
-<!--    <div class="grid-2">-->
-<!--      &lt;!&ndash; 회원가입 &ndash;&gt;-->
-<!--      <form id="signupForm" class="card">-->
-<!--        <h3>회원가입</h3>-->
-<!--        <label>아이디 <input id="signupId" required /></label>-->
-<!--        <label>비밀번호 <input id="signupPw" type="password" required /></label>-->
-
-<!--        <div class="row gap-8">-->
-<!--          <label><input type="radio" name="gender" value="M"> 남</label>-->
-<!--          <label><input type="radio" name="gender" value="F"> 여</label>-->
-<!--        </div>-->
-
-<!--        <div class="row gap-8">-->
-<!--          <select id="birthYear" required></select>-->
-<!--          <select id="birthMonth" required></select>-->
-<!--          <select id="birthDay" required></select>-->
-<!--        </div>-->
-
-<!--        <label>주소 <input id="address" placeholder="선택사항"/></label>-->
-
-<!--        <label>MBTI-->
-<!--          <select id="mbtiSelect">-->
-<!--            <option value="">선택</option>-->
-<!--            <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>-->
-<!--            <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>-->
-<!--            <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>-->
-<!--            <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>-->
-<!--          </select>-->
-<!--        </label>-->
-
-<!--        <button class="primary" type="submit">가입하고 취미 설정하기</button>-->
-<!--      </form>-->
-
-      <!-- 로그인 -->
+  <!-- 로그인/마이페이지 섹션 등 기존 것들은 그대로 두세요 -->
+  <section id="authPage" class="page hidden">
+    <div class="grid-2">
       <form id="loginForm" class="card">
         <h3>로그인</h3>
         <label>아이디 <input id="loginId" required /></label>
@@ -150,7 +115,6 @@
     </div>
   </section>
 
-  <!-- 마이페이지 -->
   <section id="myPage" class="page hidden">
     <div class="card">
       <h2>마이페이지</h2>
@@ -159,13 +123,71 @@
     </div>
   </section>
 
-  <!-- 기타 섹션(숨김 유지 가능) -->
-  <section id="map" class="page hidden"><div class="card"><h3>지도</h3></div></section>
-  <section id="board" class="page hidden"><div class="card"><h3>게시판</h3></div></section>
-  <section id="chartContainer" class="page hidden"><div class="card"><h3>차트</h3></div></section>
-
   <!-- 취미 설문 iframe -->
-  <iframe src="Hobby/hob.html" width="100%" height="640" frameborder="0"
+  <iframe src="{% url 'hobby' %}" width="100%" height="640" frameborder="0"
           class="hidden" id="hobFrame"></iframe>
+
+  <!-- ✅ 홈 우하단: SPA로 오버레이 열기 (URL 반영: ?chatbot=1) -->
+  <a class="fab-to-chatbot" href="?chatbot=1" id="openChatbot" title="AI 상담 열기" aria-label="AI 상담 열기">
+    <i class="fa-solid fa-robot" aria-hidden="true"></i>
+  </a>
+
+  <!-- ✅ 챗봇 “오버레이 모달”(부트스트랩 미사용) -->
+  <div id="chatbotOverlay" class="cb-overlay hidden" role="dialog" aria-modal="true" aria-label="AI 상담">
+    <div class="cb-modal chatbot-container">
+      <!-- 헤더 -->
+      <div class="cb-header">
+        <div class="cb-title"><i class="fa-solid fa-robot"></i> CHATBOT</div>
+        <div class="cb-actions">
+          <button class="cb-icon-btn" type="button" id="cb-reset" title="지우기"><i class="fa-solid fa-trash-can"></i></button>
+          <button class="cb-icon-btn" type="button" id="cb-close" title="닫기"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
+      <!-- 본문 -->
+      <div class="chatbot-body" id="chat-body">
+        <div class="msg bot">
+          <div class="avatar" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M11 2a1 1 0 1 1 2 0v1h2.5a2.5 2.5 0 0 1 0 5H14v1h2a3 3 0 0 1 3 3v4a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4v-4a3 3 0 0 1 3-3h2V8H8.5a2.5 2.5 0 1 1 0-5H11V2Z"/>
+            </svg>
+          </div>
+          <div class="chat-message bot-message">
+            시작할 상담 유형을 선택해주세요.
+            <div class="chip-row" id="mode-chips">
+              <button class="chip" onclick="chooseMode('geo')">위치기반 추천</button>
+              <button class="chip" onclick="chooseMode('chat')">챗봇 추천</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 입력 -->
+      <div class="chatbot-footer">
+        <div class="input-wrap">
+          <button class="attach-inside disabled" type="button" id="attach-btn" title="사진 첨부">
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+          <input type="file" id="file-input" accept="image/*" class="hidden" />
+          <input type="text" id="chat-input" class="input-disabled" placeholder="상담 유형을 먼저 선택하세요" disabled />
+          <button class="send-btn disabled" id="send-btn" title="전송"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 챗봇 동작(JS) -->
+  <script src="{% static 'chatbot/chatbot.js' %}?v={% now 'U' %}"></script>
+  <!-- 오버레이 열기/닫기 + URL 동기화 -->
+  <script src="{% static 'home/chatbot-overlay.js' %}?v={% now 'U' %}"></script>
+
+  <!-- 뒤로가기 BFCache 복원 시 새로고침(기존 유지) -->
+  <script>
+    window.addEventListener('pageshow', function (e) {
+      if (e.persisted || (performance.getEntriesByType('navigation')[0]?.type === 'back_forward')) {
+        location.reload();
+      }
+    });
+  </script>
 </body>
 </html>

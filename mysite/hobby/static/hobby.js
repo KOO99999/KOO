@@ -93,7 +93,7 @@ recommendList?.addEventListener('click', (e) => {
 
 // ====== STEP3: 참여하기 → 부모에 상세 페이지 열기 요청 ======
 crewList?.addEventListener('click', (e) => {
-  const btn = e.target.closest('.crew-join');
+  const btn = e.target.closest('.crew_main-join');
   if (!btn) return;
 
   const hobby = crewList.dataset.hobby || '';

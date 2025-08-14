@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'chatbot',      # 챗봇 앱 추가
     'search',       # 검색 앱 추가
     'my_page',      # 마이 페이지 앱 추가
-    'crew' ,        # 크루 앱 추가
+    'crew_main' ,        # 크루 앱 추가
     'community',    # 커뮤니티 앱 추가
     'signup',       # 회원가입 앱 추가
 ]

@@ -318,7 +318,7 @@ window.addEventListener('message', (ev) => {
       chosenHobby: data.chosenHobby || '',
       crewChoice: data.crewChoice || null
     }));
-    window.location.href = 'Crew/crew.html';
+    window.location.href = 'Crew/crew_main.html';
     return;
   }
 
@@ -371,3 +371,114 @@ resetBtn?.addEventListener('click', () => {
   show(mainPage);
   alert('초기화 완료!');
 });
+
+/* ================================
+   ✅ 챗봇 모달: ?chatbot=1 쿼리파라미터로 새로고침 없이 열기/닫기
+   - <a href="?chatbot=1"> 클릭 → 기본 이동 막고 모달만 오픈
+   - 뒤/앞 이동(popstate)과 수동 열림(데이터-API)도 URL 동기화
+   - Bootstrap 없어도 폴백으로 먼저 뜨고, 로드되면 승격
+==================================*/
+(function initChatbotModalSPA(){
+  function start() {
+    const modalEl = document.getElementById('chatbotModal');
+    if (!modalEl) { console.warn('[chatbot] #chatbotModal not found'); return; }
+
+    // 보장 스타일 (z-index/스크롤)
+    if (!document.getElementById('chatbot-modal-ensure-style')) {
+      const s = document.createElement('style');
+      s.id = 'chatbot-modal-ensure-style';
+      s.textContent = `#chatbotModal{z-index:1060} body.modal-open{overflow:hidden}`;
+      document.head.appendChild(s);
+    }
+
+    // 트리거: ?chatbot=1 인 a 클릭을 가로채서 SPA로 열기
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href]');
+      if (!a) return;
+      const url = new URL(a.getAttribute('href'), location.href);
+      if (url.searchParams.get('chatbot') === '1') {
+        e.preventDefault();
+        open(true); // pushState
+      }
+    });
+
+    let modal = null;
+    const getModal = () => {
+      if (modal) return modal;
+      if (window.bootstrap?.Modal) {
+        modal = window.bootstrap.Modal.getOrCreateInstance(modalEl);
+        return modal;
+      }
+      return null;
+    };
+
+    // 폴백 열기/닫기
+    const fbOpen = () => { modalEl.classList.add('show'); modalEl.style.display='block'; document.body.classList.add('modal-open'); };
+    const fbClose= () => { modalEl.classList.remove('show'); modalEl.style.display='none'; document.body.classList.remove('modal-open'); };
+    const isShown = () => modalEl.classList.contains('show');
+
+    const hasParam = () => new URL(location.href).searchParams.get('chatbot') === '1';
+
+    const pushParam = () => {
+      const u = new URL(location.href);
+      if (u.searchParams.get('chatbot') !== '1') {
+        u.searchParams.set('chatbot', '1');
+        history.pushState({chatbot:true}, '', u);
+      }
+    };
+    const removeParam = () => {
+      const u = new URL(location.href);
+      if (u.searchParams.has('chatbot')) {
+        u.searchParams.delete('chatbot');
+        history.replaceState({}, '', u);
+      }
+    };
+
+    const open = (withPush = true) => {
+      const m = getModal();
+      if (m) m.show(); else fbOpen();
+      if (withPush) pushParam();
+    };
+    const close = () => {
+      const m = getModal();
+      if (m && isShown()) m.hide(); else fbClose();
+      removeParam();
+    };
+
+    // popstate: 뒤/앞 이동 시 URL에 맞춰 동기화
+    window.addEventListener('popstate', () => {
+      const wantOpen = hasParam();
+      const opened = isShown();
+      if (wantOpen && !opened) { const m = getModal(); if (m) m.show(); else fbOpen(); }
+      else if (!wantOpen && opened) { close(); }
+    });
+
+    // Bootstrap 이벤트: 데이터-API나 외부에서 show()해도 URL 동기화
+    const bindBootstrapEvents = () => {
+      if (!window.bootstrap?.Modal || modalEl.__chatbotBound) return !!modalEl.__chatbotBound;
+      modalEl.__chatbotBound = true;
+
+      modalEl.addEventListener('shown.bs.modal', () => { pushParam(); });
+      modalEl.addEventListener('hidden.bs.modal', () => { removeParam(); });
+      return true;
+    };
+
+    // 최초 로드가 ?chatbot=1 이면 즉시 열기
+    if (hasParam()) { const m = getModal(); if (m) m.show(); else fbOpen(); }
+
+    // 부트스트랩 준비 폴링(최대 3초): 폴백→Modal 승격
+    let waited = 0;
+    const iv = setInterval(() => {
+      if (bindBootstrapEvents()) {
+        const m = getModal();
+        if (m && isShown()) m.show(); // 폴백으로 떠 있던 상태 승격
+        clearInterval(iv);
+      } else if (waited > 3000) { clearInterval(iv); }
+      waited += 100;
+    }, 100);
+    bindBootstrapEvents();
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start, { once:true });
+  else start();
+})();
